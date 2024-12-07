@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Фамилия</th>
+            <th>Дата рождения</th>
+            <th>Роль</th>
+        </tr>
+        <tr th:each="user : ${users_model}">
+            <td><span th:text="${user.first_name}"></span></td>
+            <td><span th:text="${user.patronymic}"></span></td>
+            <td><span th:text="${user.last_name}"></span></td>
+            <td><span th:text="${user.birth_date}"></span></td>
+        </tr>
+    </table>
+</body>
+</html>
