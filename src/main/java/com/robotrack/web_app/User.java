@@ -2,10 +2,10 @@ package com.robotrack.web_app;
 
 public class User {
     private int id = -1;
-    private String first_name;
-    private String patronymic;
-    private String last_name;
-    private String birth_date;
+    public String first_name;
+    public String patronymic;
+    public String last_name;
+    public String birth_date;
     public Role role = new Role("Гость");
 
     User(String first_name, String patronymic, String last_name, String birth_date, Role role){
