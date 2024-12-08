@@ -1,10 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Robotrack WebApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>РобоТрек - Детский клуб робототехники</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .slider img {
+            width: 100%;
+            height: auto;
+        }
+        .carousel {
+            max-height: 300px; /* Уменьшаем высоту слайдера */
+            overflow: hidden; /* Скрываем лишнее */
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+        }
+    </style>
 </head>
 <body>
-    <p>Hello from Ruslan`s ass</p>
+
+<!-- Хеддер -->
+<header class="bg-warning text-white text-center py-5">
+    <h1>Добро пожаловать в РобоТрек!</h1>
+    <p>Детский клуб робототехники для юных изобретателей</p>
+</header>
+
+<!-- Слайдер -->
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://via.placeholder.com/800x300?text=Слайд+1" class="d-block w-100" alt="Слайд 1">
+        </div>
+        <div class="carousel-item">
+            <img src="https://via.placeholder.com/800x300?text=Слайд+2" class="d-block w-100" alt="Слайд 2">
+        </div>
+        <div class="carousel-item">
+            <img src="https://via.placeholder.com/800x300?text=Слайд+3" class="d-block w-100" alt="Слайд 3">
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Предыдущий</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Следующий</span>
+    </a>
+</div>
+
+<!-- Виджет карты -->
+<div class="container my-5">
+    <h2 class="text-center">Наша локация</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.823850511417!2d37.61729931594264!3d55.75582588055376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a9c9f1e6c61%3A0x7c8c6c4e1d4c2b5b!2z0JzQuNC60L7Qv9C60L7Qv9C60L7Qv9C60L7Qv9C60L7Qv9C60L7Qv9C60L7Qv9C60L7Q!5e0!3m2!1sru!2sru!4v1616173766580!5m2!1sru!2sru" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- Футтер -->
+<footer class="footer text-center">
+    <div class="container">
+        <p>&copy; 2023 РобоТрек. Все права защищены.</p>
+        <p>Контакты: info@robotrek.ru | Телефон: +7 (999) 123-45-67</p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
