@@ -12,13 +12,17 @@
             <th>Отчество</th>
             <th>Фамилия</th>
             <th>Дата рождения</th>
+            <th>Номер телефона</th>
+            <th>Пароль</th>
             <th>Роль</th>
         </tr>
         <tr th:each="user : ${users_model}">
-            <td><span th:text="${user.first_name}"></span></td>
-            <td><span th:text="${user.patronymic}"></span></td>
-            <td><span th:text="${user.last_name}"></span></td>
-            <td><span th:text="${user.birth_date}"></span></td>
+            <td><span th:text="${user.get_first_name()}"></span></td>
+            <td><span th:text="${user.get_patronymic()}"></span></td>
+            <td><span th:text="${user.get_last_name()}"></span></td>
+            <td><span th:text="${user.get_birth_date()}"></span></td>
+            <td><span th:text="${user.get_phone_number()}"></span></td>
+            <td><span th:text="${user.get_password()}"></span></td>
             <td><span th:text="${user.role.get_name()}"></span></td>
         </tr>
     </table>

@@ -1,18 +1,23 @@
 package com.robotrack.web_app;
 
+
 public class User {
     private int id = -1;
-    public String first_name;
-    public String patronymic;
-    public String last_name;
-    public String birth_date;
+    private String first_name;
+    private String patronymic;
+    private String last_name;
+    private String birth_date;
+    private String phone_number;
+    private String password;
     public Role role = new Role("Гость");
 
-    User(String first_name, String patronymic, String last_name, String birth_date, Role role){
+    User(String first_name, String patronymic, String last_name, String birth_date, String phone_number, String password, Role role){
         this.first_name = first_name;
         this.patronymic = patronymic;
         this.last_name = last_name;
         this.birth_date = birth_date;
+        this.phone_number = phone_number;
+        this.password = password;
         this.role = role;
     }
 
@@ -60,7 +65,15 @@ public class User {
         return role;
     }
 
+    public String get_phone_number(){
+        return phone_number;
+    }
+
+    public String get_password(){
+        return password;
+    }
+
     public String toString(){
-        return "id: " + id + ", first_name: " + first_name + ", patronymic: " + patronymic + "birth_date: " + birth_date + "role: " + role.get_name();
+        return "id: " + id + ", first_name: " + first_name + ", patronymic: " + patronymic + "birth_date: " + birth_date + "phone_number:"+ phone_number + "password: "+ password + "role: " + role.get_name();
     }
 }

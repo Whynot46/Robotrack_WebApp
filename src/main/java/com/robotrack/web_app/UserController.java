@@ -12,8 +12,8 @@ public class UserController{
     private ArrayList<User> users = new ArrayList<User>();
 
     UserController(){
-        users.add(new User("Алексей", "Дмитриевич", "Пахалев", "28.11.2004", new Role("Администратор")));
-        users.add(new User("Никита", "Денисович", "Мальцев", "03.08.2004", new Role("Ученик")));
+        users.add(new User("Алексей", "Дмитриевич", "Пахалев", "28.11.2004", "+79170960237", "1234", new Role("Администратор")));
+        users.add(new User("Никита", "Денисович", "Мальцев", "03.08.2004", "+79170960237", "1234", new Role("Ученик")));
     }
 
     @GetMapping("get_users")
