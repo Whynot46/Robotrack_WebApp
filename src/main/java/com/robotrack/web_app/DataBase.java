@@ -40,7 +40,7 @@ public class DataBase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; // Если произошла ошибка или запись не найдена
+        return false;
     }
     
     public static boolean add_user(String firstName, String patronymic, String lastName, String birthDate, String phoneNumber, String password, int role_id) {
@@ -59,7 +59,7 @@ public class DataBase {
             return rowsAffected > 0; // Возвращает true, если пользователь был добавлен
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Возвращает false в случае ошибки
+            return false;
         }
     }
 
@@ -72,22 +72,18 @@ public class DataBase {
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
-                // Извлекаем данные из результата
                 int id = resultSet.getInt("id");
-                String firstName = resultSet.getString("first_name");
+                String first_name = resultSet.getString("first_name");
                 String patronymic = resultSet.getString("patronymic");
-                String lastName = resultSet.getString("last_name");
-                String birthDate = resultSet.getString("birth_date");
-                String phoneNumber = resultSet.getString("phone_number");
+                String last_name = resultSet.getString("last_name");
+                String birth_date = resultSet.getString("birth_date");
+                String phone_number = resultSet.getString("phone_number");
                 String password = resultSet.getString("password");
-                int roleId = resultSet.getInt("role_id"); // Получаем role_id из результата
+                int role_id = resultSet.getInt("role_id");
 
-                // Создаем объект Role на основе roleId
-                Role role = new Role(roleId); // Предполагается, что у вас есть соответствующий конструктор в классе Role
-
-                // Создаем объект User
-                User user = new User(id, firstName, patronymic, lastName, birthDate, phoneNumber, password, role);
-                users.add(user); // Добавляем пользователя в список
+                Role role = new Role(role_id);
+                User user = new User(id, first_name, patronymic, last_name, birth_date, phone_number, password, role);
+                users.add(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,7 +92,7 @@ public class DataBase {
     }
 
     public static User get_user(int user_id) {
-        User user = null; // Изначально пользователь равен null
+        User user = null;
         String query = "SELECT id, first_name, patronymic, last_name, birth_date, phone_number, password, role_id FROM users WHERE id = ?"; // SQL-запрос для получения пользователя по id
     
         try (Connection connection = DataBase.getConnection(); // Получаем соединение из класса DataBase
@@ -105,27 +101,24 @@ public class DataBase {
             preparedStatement.setInt(1, user_id); // Устанавливаем значение user_id в запрос
             ResultSet resultSet = preparedStatement.executeQuery(); // Выполняем запрос
     
-            if (resultSet.next()) { // Если есть результат
+            if (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                String firstName = resultSet.getString("first_name");
+                String first_name = resultSet.getString("first_name");
                 String patronymic = resultSet.getString("patronymic");
-                String lastName = resultSet.getString("last_name");
-                String birthDate = resultSet.getString("birth_date");
-                String phoneNumber = resultSet.getString("phone_number");
+                String last_name = resultSet.getString("last_name");
+                String birth_date = resultSet.getString("birth_date");
+                String phone_number = resultSet.getString("phone_number");
                 String password = resultSet.getString("password");
-                int roleId = resultSet.getInt("role_id"); // Получаем role_id из результата
+                int role_id = resultSet.getInt("role_id"); // Получаем role_id из результата
     
-                // Создаем объект Role на основе roleId
-                Role role = DataBase.get_role(roleId); // Предполагается, что у вас есть соответствующий конструктор в классе Role
-    
-                // Создаем объект User
-                user = new User(id, firstName, patronymic, lastName, birthDate, phoneNumber, password, role);
+                Role role = DataBase.get_role(role_id);
+                user = new User(id, first_name, patronymic, last_name, birth_date, phone_number, password, role);
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Обработка исключений
+            e.printStackTrace();
         }
         
-        return user; // Возвращаем найденного пользователя или null, если не найден
+        return user;
     }
 
     public static List<Role> get_roles() {
@@ -163,20 +156,18 @@ public class DataBase {
             ResultSet resultSet = preparedStatement.executeQuery(); // Выполняем запрос
     
             if (resultSet.next()) { // Если есть результат
-                String name = resultSet.getString("name"); // Получаем имя роли
-    
-                // Создаем объект Role
-                role = new Role(role_id, name); // Используем конструктор Role с id и name
+                String name = resultSet.getString("name");
+                role = new Role(role_id, name);
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Обработка исключений
         }
         
-        return role; // Возвращаем найденную роль или null, если не найдена
+        return role;
     }
 
     public static String get_role_name(int role_id) {
-        String roleName = null;
+        String role_name = null;
         String query = "SELECT name FROM roles WHERE id = ?"; // SQL-запрос для получения name по role_id
     
         try (Connection connection = getConnection(); // Получаем соединение из пула
@@ -186,13 +177,13 @@ public class DataBase {
             ResultSet resultSet = preparedStatement.executeQuery(); // Выполняем запрос
     
             if (resultSet.next()) { // Если есть результат
-                roleName = resultSet.getString("name"); // Получаем name
+                role_name = resultSet.getString("name"); // Получаем name
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Обработка исключений
         }
     
-        return roleName; // Возвращаем найденное имя роли или null, если не найдено
+        return role_name;
     }
 
     public static List<Course> get_courses() {
@@ -207,12 +198,9 @@ public class DataBase {
                 // Извлекаем данные из результата
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                String ageLimit = resultSet.getString("age_limit");
-    
-                // Создаем объект Course
-                Course course = new Course(id, name, ageLimit); // Используем конструктор Course с name и age_limit
-    
-                courses.add(course); // Добавляем курс в список
+                String age_limit = resultSet.getString("age_limit");
+                Course course = new Course(id, name, age_limit);
+                courses.add(course);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -233,16 +221,14 @@ public class DataBase {
             if (resultSet.next()) { // Если есть результат
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                String ageLimit = resultSet.getString("age_limit");
-    
-                // Создаем объект Course
-                course = new Course(id, name, ageLimit); // Используем конструктор Course с id, name и age_limit
+                String age_limit = resultSet.getString("age_limit");
+                course = new Course(id, name, age_limit);
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Обработка исключений
+            e.printStackTrace();
         }
         
-        return course; // Возвращаем найденный курс или null, если не найден
+        return course;
     }
  
     public static List<Task> get_tasks() {
@@ -258,15 +244,11 @@ public class DataBase {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
-                int courseId = resultSet.getInt("course_id"); // Получаем course_id из результата
+                int course_id = resultSet.getInt("course_id"); // Получаем course_id из результата
     
-                // Получаем объект Course по courseId
-                Course course = DataBase.get_course(courseId); // Предполагается, что у вас есть соответствующий конструктор в классе Course
-    
-                // Создаем объект Task
+                Course course = DataBase.get_course(course_id);
                 Task task = new Task(id, name, description, course);
-    
-                tasks.add(task); // Добавляем задачу в список
+                tasks.add(task);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -285,21 +267,17 @@ public class DataBase {
             while (resultSet.next()) {
                 // Извлекаем данные из результата
                 int id = resultSet.getInt("id");
-                int courseId = resultSet.getInt("course_id");
+                int course_id = resultSet.getInt("course_id");
                 String date = resultSet.getString("date");
                 String time = resultSet.getString("time");
-                String usersIdString = resultSet.getString("users_id"); // Получаем users_id как строку
+                String users_id_str = resultSet.getString("users_id"); // Получаем users_id как строку
     
-                // Получаем объект Course по courseId
-                Course course = DataBase.get_course(courseId); // Используем метод get_course для получения курса
+                Course course = DataBase.get_course(course_id);
+                ArrayList<User> students = new ArrayList<>();
     
-                // Создаем список студентов
-                ArrayList<User> students = new ArrayList<>(); // Изменено на ArrayList<User>
-    
-                // Проверяем, есть ли users_id
-                if (usersIdString != null && !usersIdString.isEmpty()) {
-                    usersIdString = usersIdString.replaceAll("[{}]", "").trim();
-                    String[] userIds = usersIdString.split(","); // Предполагаем, что идентификаторы разделены запятыми
+                if (users_id_str != null && !users_id_str.isEmpty()) {
+                    users_id_str = users_id_str.replaceAll("[{}]", "").trim();
+                    String[] userIds = users_id_str.split(","); // Предполагаем, что идентификаторы разделены запятыми
                     for (String userId : userIds) {
                         User user = DataBase.get_user(Integer.parseInt(userId.trim())); // Получаем объект User по userId
                         if (user != null) {
@@ -307,11 +285,8 @@ public class DataBase {
                         }
                     }
                 }
-    
-                // Создаем объект Lesson
-                Lesson lesson = new Lesson(id, course, date, time, students); // Передаем список студентов
-    
-                lessons.add(lesson); // Добавляем урок в список
+                Lesson lesson = new Lesson(id, course, date, time, students);
+                lessons.add(lesson);
             }
         } catch (Exception e) {
             e.printStackTrace();
