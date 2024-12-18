@@ -1,9 +1,9 @@
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     patronymic VARCHAR(50),
@@ -15,13 +15,13 @@ CREATE TABLE users (
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
-CREATE TABLE courses (
+CREATE TABLE IF NOT EXISTS courses (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     age_limit VARCHAR(50)
 );
 
-CREATE TABLE tasks (
+CREATE TABLE IF NOT EXISTS tasks (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
@@ -29,7 +29,7 @@ CREATE TABLE tasks (
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
-CREATE TABLE lessons (
+CREATE TABLE IF NOT EXISTS lessons (
     id SERIAL PRIMARY KEY,
     course_id INT,
     date DATE NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE lessons (
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
-CREATE TABLE student_profile (
+CREATE TABLE IF NOT EXISTS student_profile (
     user_id INT PRIMARY KEY,
     school_shift INT,
     last_task_id INT,
@@ -48,7 +48,7 @@ CREATE TABLE student_profile (
     FOREIGN KEY (last_task_id) REFERENCES tasks(id)
 );
 
-CREATE TABLE parent_profile (
+CREATE TABLE IF NOT EXISTS parent_profile (
     user_id INT,
     child_id INT,
     PRIMARY KEY (user_id, child_id),
@@ -56,14 +56,14 @@ CREATE TABLE parent_profile (
     FOREIGN KEY (child_id) REFERENCES users(id)
 );
 
-CREATE TABLE teacher_profile (
+CREATE TABLE IF NOT EXISTS teacher_profile (
     user_id INT PRIMARY KEY,
     courses_id INT[],
     lessons_id INT[],
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE admin_profile (
+CREATE TABLE IF NOT EXISTS admin_profile (
     id INT PRIMARY KEY,
     FOREIGN KEY (id) REFERENCES users(id)
 );
