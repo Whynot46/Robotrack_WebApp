@@ -19,6 +19,10 @@ public class User {
         this.phone_number = phone_number;
         this.password = password;
         this.role = role;
+        if (DataBase.is_old(phone_number)){
+            DataBase.add_user(first_name, patronymic, last_name, birth_date, phone_number, password, role.get_id());
+        }
+            
     }
 
     public void set_first_name(String first_name){
@@ -63,6 +67,10 @@ public class User {
 
     public Role get_role(){
         return role;
+    }
+
+    public String get_role_name(){
+        return role.get_name();
     }
 
     public String get_phone_number(){

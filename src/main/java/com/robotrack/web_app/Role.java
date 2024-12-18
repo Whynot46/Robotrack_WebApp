@@ -1,5 +1,6 @@
 package com.robotrack.web_app;
 
+
 public class Role {
     private int id;
     private String name;
@@ -8,7 +9,12 @@ public class Role {
         this.name = name;
     }
 
-    public int get_id(String name){
+    Role(int id){
+        this.id = id;
+        this.name = DataBase.get_role_name(id);
+    }
+
+    public int get_id(){
         return id;
     }
 
