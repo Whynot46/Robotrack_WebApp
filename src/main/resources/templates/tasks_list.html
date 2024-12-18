@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список заданий</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Список заданий</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>ID направления</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="task : ${tasks}">
+                    <td><span th:text="${task.get_id()}"></span></td>
+                    <td><span th:text="${task.get_name()}"></span></td>
+                    <td><span th:text="${task.get_description()}"></span></td>
+                    <td><span th:text="${task.get_course()}"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

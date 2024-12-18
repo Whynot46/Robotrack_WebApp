@@ -2,16 +2,17 @@ package com.robotrack.web_app;
 
 
 public class User {
-    private int id = -1;
+    private int id;
     private String first_name;
     private String patronymic;
     private String last_name;
     private String birth_date;
     private String phone_number;
     private String password;
-    public Role role = new Role("Гость");
+    private Role role;
 
-    User(String first_name, String patronymic, String last_name, String birth_date, String phone_number, String password, Role role){
+    User(int id, String first_name, String patronymic, String last_name, String birth_date, String phone_number, String password, Role role){
+        this.id = id;
         this.first_name = first_name;
         this.patronymic = patronymic;
         this.last_name = last_name;

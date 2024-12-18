@@ -6,7 +6,8 @@ public class Task {
     private String description;
     private Course course;
 
-    Task(String name, String description, Course course){
+    Task(int id, String name, String description, Course course){
+        this.id = id;
         this.name = name;
         this.description = description;
         this.course = course;

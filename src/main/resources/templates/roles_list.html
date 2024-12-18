@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список ролей</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Список ролей</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="role : ${roles}">
+                    <td><span th:text="${role.get_id()}"></span></td>
+                    <td><span th:text="${role.get_name()}"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

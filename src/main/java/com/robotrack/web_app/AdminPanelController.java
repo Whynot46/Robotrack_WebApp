@@ -14,41 +14,43 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AdminPanelController {
 
     @GetMapping("/admin_panel")
-    public String showAdminPanel(Model model) {
+    public String show_admin_panel(Model model) {
         return "admin_panel";
     }
 
     @GetMapping("/admin_panel/users")
-    public String adminPanel(Model model) {
-        List<User> users = new ArrayList<>();
-        String query = "SELECT first_name, patronymic, last_name, birth_date, phone_number, password, role_id FROM users"; // Предполагается, что role_id хранится в базе данных
-
-        try (Connection connection = DataBase.getConnection(); // Получаем соединение из класса DataBase
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            while (resultSet.next()) {
-                // Извлекаем данные из результата
-                String firstName = resultSet.getString("first_name");
-                String patronymic = resultSet.getString("patronymic");
-                String lastName = resultSet.getString("last_name");
-                String birthDate = resultSet.getString("birth_date");
-                String phoneNumber = resultSet.getString("phone_number");
-                String password = resultSet.getString("password");
-                int roleId = resultSet.getInt("role_id"); // Получаем role_id из результата
-
-                // Создаем объект Role на основе roleId
-                Role role = new Role(roleId); // Предполагается, что у вас есть соответствующий конструктор в классе Role
-
-                // Создаем объект User
-                User user = new User(firstName, patronymic, lastName, birthDate, phoneNumber, password, role);
-                users.add(user); // Добавляем пользователя в список
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public String show_users(Model model) {
+        List<User> users = DataBase.get_users();
         model.addAttribute("users", users); // Добавляем список пользователей в модель
         return "users_list"; // Возвращаем имя шаблона
     }
+
+    @GetMapping("/admin_panel/roles")
+    public String show_roles(Model model) {
+        List<Role> roles = DataBase.get_roles();
+        model.addAttribute("roles", roles); // Добавляем список ролей в модель
+        return "roles_list"; // Возвращаем имя шаблона
+    }
+
+    @GetMapping("/admin_panel/courses")
+    public String show_courses(Model model) {
+        List<Course> courses = DataBase.get_courses();
+        model.addAttribute("courses", courses); // Добавляем список ролей в модель
+        return "courses_list"; // Возвращаем имя шаблона
+    }
+
+    @GetMapping("/admin_panel/tasks")
+    public String show_tasks(Model model) {
+        List<Task> tasks = DataBase.get_tasks();
+        model.addAttribute("tasks", tasks); // Добавляем список ролей в модель
+        return "tasks_list"; // Возвращаем имя шаблона
+    }
+
+    @GetMapping("/admin_panel/lessons")
+    public String show_lessons(Model model) {
+        List<Lesson> lessons = DataBase.get_lessons();
+        model.addAttribute("lessons", lessons); // Добавляем список ролей в модель
+        return "lessons_list"; // Возвращаем имя шаблона
+    }
+
 }
