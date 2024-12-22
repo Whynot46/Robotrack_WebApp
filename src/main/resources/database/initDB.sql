@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
     last_name VARCHAR(50) NOT NULL,
     birth_date DATE NOT NULL,
     phone_number VARCHAR(15),
-    password VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
     role_id INT,
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
@@ -18,15 +18,15 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS courses (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    age_limit VARCHAR(50)
+    age_limit VARCHAR(50),
+    tasks_id INT[]
 );
 
 CREATE TABLE IF NOT EXISTS tasks (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
-    course_id INT,
-    FOREIGN KEY (course_id) REFERENCES courses(id)
+    course_id INT
 );
 
 CREATE TABLE IF NOT EXISTS lessons (
@@ -66,4 +66,13 @@ CREATE TABLE IF NOT EXISTS teacher_profile (
 CREATE TABLE IF NOT EXISTS admin_profile (
     id INT PRIMARY KEY,
     FOREIGN KEY (id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS news (
+    id INT PRIMARY KEY,
+    author_id INT,
+    FOREIGN KEY (author_id) REFERENCES users(id),
+    title VARCHAR(100),
+    content TEXT,
+    publish_datetime TIMESTAMP
 );

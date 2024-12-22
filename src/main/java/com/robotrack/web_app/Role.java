@@ -10,11 +10,6 @@ public class Role {
         this.name = name;
     }
 
-    Role(int id){
-        this.id = id;
-        this.name = DataBase.get_role_name(id);
-    }
-
     public int get_id(){
         return id;
     }

@@ -4,25 +4,25 @@ import java.util.ArrayList;
 
 public class Lesson {
     private int id;
-    private Course course;
+    private int course_id;
     private String date;
     private String time;
-    private ArrayList<User> students = new ArrayList<User>();
+    private ArrayList<Integer> students_id = new ArrayList<Integer>();
 
-    Lesson(int id, Course course, String date, String time, ArrayList<User> students){
+    Lesson(int id, int course_id, String date, String time, ArrayList<Integer> students_id){
         this.id = id;
-        this.course = course;
+        this.course_id = course_id;
         this.date = date;
         this.time = time;
-        this.students = students;
+        this.students_id = students_id;
     }
 
-    public ArrayList<User> get_students(){
-        return students;
+    public ArrayList<Integer> get_students_id(){
+        return students_id;
     }
 
-    public void add_student(User student){
-        students.add(student);
+    public void add_student(int student_id){
+        students_id.add(student_id);
     }
 
     public String get_date(){
@@ -38,18 +38,8 @@ public class Lesson {
     }
 
     public int get_course_id(){
-        return course.get_id();
+        return course_id;
     }
 
-    public String get_str_students_id() {
-        StringBuilder students_id = new StringBuilder();
-        for (int i = 0; i < students.size(); i++) {
-            students_id.append(students.get(i).get_id());
-            if (i < students.size() - 1) {
-                students_id.append(","); // Добавляем запятую между идентификаторами
-            }
-        }
-        return students_id.toString(); // Возвращаем строку
-    }
 
 }

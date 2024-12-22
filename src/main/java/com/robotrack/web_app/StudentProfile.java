@@ -3,48 +3,38 @@ package com.robotrack.web_app;
 import java.util.ArrayList;
 
 public class StudentProfile {
-    public User user;
+    private int user_id;
     private String school_shift;
-    public Task last_task;
-    private ArrayList<Course> courses = new ArrayList<Course>();
-    private ArrayList<Lesson> lessons = new ArrayList<Lesson>();
+    private int last_task_id;
+    private ArrayList<Integer> courses_id;
+    private ArrayList<Integer> lessons_id;
 
-    StudentProfile(User user, String school_shift, Task last_task){
-        this.user = user;
+    StudentProfile(int user_id, String school_shift, int last_task_id, ArrayList<Integer> courses_id, ArrayList<Integer> lessons_id){
+        this.user_id = user_id;
         this.school_shift = school_shift;
-        this.last_task = last_task;
+        this.last_task_id = last_task_id;
+        this.courses_id = courses_id;
+        this.lessons_id = lessons_id;
     }
 
-    public void set_school_shift(String school_shift){
-        this.school_shift = school_shift;
-    }
-
-    public void set_last_task(Task last_task){
-        this.last_task = last_task;
-    }
-
-    public void add_course(Course course){
-        this.courses.add(course);
-    }
-
-    public void add_lesson(Lesson lesson){
-        this.lessons.add(lesson);
-    }
-
-    public void change_last_task(Task last_task){
-        this.last_task = last_task;
-    }
-
-    public ArrayList<Course> get_course(){
-        return courses;
-    }
-
-    public ArrayList<Lesson> get_lessons(){
-        return lessons;
+    public int get_user_id(){
+        return user_id;
     }
 
     public String get_school_shift(){
         return school_shift;
+    }
+
+    public int get_last_task_id(){
+        return last_task_id;
+    }
+
+    public ArrayList<Integer> get_courses_id(){
+        return courses_id;
+    }
+
+    public ArrayList<Integer> get_lessons_id(){
+        return lessons_id;
     }
     
 }

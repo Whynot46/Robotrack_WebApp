@@ -3,22 +3,20 @@ package com.robotrack.web_app;
 import java.util.ArrayList;
 
 public class TeacherProfile {
-    public User user;
-    private ArrayList<Course> courses = new ArrayList<Course>();
+    private int user_id;
+    private ArrayList<Integer> courses_id;
 
-    TeacherProfile(User user){
-        this.user = user;
+    TeacherProfile(int user_id, ArrayList<Integer> courses_id){
+        this.user_id = user_id;
+        this.courses_id = courses_id;
     }
 
-    public ArrayList<Course> get_courses(){
-        return courses;
+    public int get_user_id(){
+        return this.user_id;
     }
 
-    public void add_course(Course course){
-        courses.add(course);
+    public ArrayList<Integer> get_courses_id(){
+        return this.courses_id;
     }
 
-    public void remove_course(Course course){
-        courses.remove(course);
-    }
 }

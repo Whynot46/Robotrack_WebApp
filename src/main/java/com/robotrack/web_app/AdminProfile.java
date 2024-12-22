@@ -1,9 +1,13 @@
 package com.robotrack.web_app;
 
 public class AdminProfile {
-    public User user;
+    private int user_id;
 
-    AdminProfile(User user){
-        this.user = user;
+    AdminProfile(int user_id){
+        this.user_id = user_id;
+    }
+
+    public int get_user_id(){
+        return user_id;
     }
 }

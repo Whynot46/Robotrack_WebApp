@@ -17,15 +17,5 @@ public class AuthController {
     public String register() {
         return "register";
     }
-
-    @PostMapping("/register")
-    public String registerUser (@RequestParam String firstName,
-                                @RequestParam(required = false) String middleName,
-                                @RequestParam String lastName,
-                                @RequestParam String birthDate,
-                                @RequestParam String role,
-                                @RequestParam String password) {
-
-        return "redirect:/login"; 
-    }
+    
 }

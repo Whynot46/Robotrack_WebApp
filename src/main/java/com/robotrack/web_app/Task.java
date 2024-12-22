@@ -4,13 +4,11 @@ public class Task {
     private int id;
     private String name;
     private String description;
-    private Course course;
 
-    Task(int id, String name, String description, Course course){
+    Task(int id, String name, String description){
         this.id = id;
         this.name = name;
         this.description = description;
-        this.course = course;
     }
 
     public void set_name(String name){
@@ -19,10 +17,6 @@ public class Task {
 
     public void set_description(String description){
         this.description = description;
-    }
-
-    public void set_course(Course course){
-        this.course = course;
     }
 
     public Integer get_id(){
@@ -37,7 +31,4 @@ public class Task {
         return description;
     }
 
-    public Course get_course(){
-        return course;
-    }
 }
