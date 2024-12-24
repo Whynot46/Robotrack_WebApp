@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои занятия</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div th:replace="~{header :: header}"></div>
+
+    <div class="container mt-5">
+        <h2 class="text-center">Мои занятия</h2>
+        
+        <div class="row" id="lessons-container">
+            <!-- Пример карточки занятия -->
+            <div class="col-md-4 mb-4 lesson-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Направление: Робототехника 4-6 лет</h5>
+                        <p class="card-text"><strong>Дата:</strong> 2024-12-25</p>
+                        <p class="card-text"><strong>Время:</strong> 12:00 - 13:30</p>
+                        <button class="btn btn-danger" onclick="confirmCancellation(this)">Отменить запись</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4 lesson-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Направление: Робототехника 4-6 лет</h5>
+                        <p class="card-text"><strong>Дата:</strong> 2024-12-26</p>
+                        <p class="card-text"><strong>Время:</strong> 17:00 - 18:30</p>
+                        <button class="btn btn-danger" onclick="confirmCancellation(this)">Отменить запись</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4 lesson-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Направление: 3D-моделирование</h5>
+                        <p class="card-text"><strong>Дата:</strong> 2024-12-30</p>
+                        <p class="card-text"><strong>Время:</strong> 14:00 - 15:30</p>
+                        <button class="btn btn-danger" onclick="confirmCancellation(this)">Отменить запись</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function confirmCancellation(button) {
+            // Открываем окно подтверждения
+            if (confirm("Вы уверены, что хотите отменить запись на это занятие?")) {
+                // Удаляем карточку занятия
+                const card = button.closest('.lesson-card');
+                card.remove();
+            }
+        }
+    </script>
+</body>
+</html>

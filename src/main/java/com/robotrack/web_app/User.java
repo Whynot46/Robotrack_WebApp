@@ -1,7 +1,12 @@
 package com.robotrack.web_app;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-public class User {
+public class User implements UserDetails {
     private int id;
     private String first_name;
     private String patronymic;
@@ -24,6 +29,10 @@ public class User {
 
     public Integer get_id(){
         return id;
+    }
+
+    public String get_fullname() {
+        return first_name + " " + patronymic + " " + last_name;
     }
 
     public String get_first_name(){
@@ -54,7 +63,40 @@ public class User {
         return password_hash;
     }
 
+    public String get_role_name(){
+        return (DataBase.get_role(role_id)).get_name();
+    }
+
     public String toString(){
         return "id: " + id + ", first_name: " + first_name + ", patronymic: " + patronymic + "birth_date: " + birth_date + "phone_number:"+ phone_number + "password_hash: "+ password_hash + "role_id: " + role_id;
     }
+
+        // Реализация методов UserDetails
+    @Override
+    public String getUsername() {
+        return get_fullname(); // Возвращаем полное имя как имя пользователя
+    }
+
+    @Override
+    public String getPassword() {
+        return password_hash; // Возвращаем хэш пароля
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+        if (role_id == 3) { // Assuming 3 is the role ID for STUDENT
+            authorities.add(new SimpleGrantedAuthority("STUDENT")); // No "ROLE_" prefix
+        } else if (role_id == 2) { // Assuming 2 is the role ID for TEACHER
+            authorities.add(new SimpleGrantedAuthority("TEACHER")); // No "ROLE_" prefix
+        } else if (role_id == 1) { // Assuming 1 is the role ID for ADMIN
+            authorities.add(new SimpleGrantedAuthority("ADMIN")); // No "ROLE_" prefix
+        }
+        return authorities;
+    }
+
+    public String getFullName() {
+        return last_name + " " + first_name + " " + patronymic; // Возвращает полное имя
+    }
+
 }

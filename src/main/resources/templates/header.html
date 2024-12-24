@@ -1,0 +1,30 @@
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container" style="display: flex; justify-content: space-between;">
+            <a class="navbar-brand" href="/">Детский клуб робототехники "RoboTrack"</a>
+
+            <div class="navbar-nav" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+                <a class="nav-link" th:href="${user.get_role_name() == 'STUDENT' ? '/student/profile' : 
+                user.get_role_name() == 'TEACHER' ? '/teacher/profile' : 
+                user.get_role_name() == 'ADMIN' ? '/admin/profile' : 
+                '/profile'}"
+                    style="border: 1px solid grey; border-radius: 15px; padding: 10px 20px; color: #000;">Личный
+                    кабинет</a>
+                <a class="nav-link" th:href="${user.get_role_name() == 'STUDENT' ? '/student/student_lessons' : 
+                user.get_role_name() == 'TEACHER' ? '/teacher/tests_list' : 
+                user.get_role_name() == 'ADMIN' ? '/admin/tests_list' : 
+                '/profile'}" style="border: 1px solid grey; border-radius: 15px; padding: 10px 20px; color: #000;">Занятия</a>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                <span class="navbar-text" th:text="${user.get_fullname()}" style="color: #000; font-size: 18px;"></span>
+                <a class="nav-link btn btn-danger" th:href="@{/logout}" style="border-radius: 10px;">Выход</a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+</div>

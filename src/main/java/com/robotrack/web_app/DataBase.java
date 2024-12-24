@@ -213,6 +213,37 @@ public class DataBase {
         return user;
     }
 
+    public static User get_user(String phone_number) {
+        String query = "SELECT id, first_name, patronymic, last_name, birth_date, phone_number, password_hash, role_id FROM users WHERE phone_number = ?"; // SQL-запрос для получения пользователя по номеру телефона
+        User user = null; // Изначально пользователь равен null
+        System.out.println("Phone number fron DB.get_user:" + phone_number);
+
+        try (Connection connection = getConnection(); // Получаем соединение из пула
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            preparedStatement.setString(1, phone_number); // Устанавливаем номер телефона в запрос
+            ResultSet resultSet = preparedStatement.executeQuery(); // Выполняем запрос
+
+            if (resultSet.next()) { // Если запись найдена
+                int id = resultSet.getInt("id");
+                String first_name = resultSet.getString("first_name");
+                String patronymic = resultSet.getString("patronymic");
+                String last_name = resultSet.getString("last_name");
+                String birth_date = resultSet.getString("birth_date");
+                String phone_number_db = resultSet.getString("phone_number");
+                String password_hash = resultSet.getString("password_hash");
+                int role_id = resultSet.getInt("role_id");
+
+                // Создаем объект User с полученными данными
+                user = new User(id, first_name, patronymic, last_name, birth_date, phone_number_db, password_hash, role_id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Обработка исключений
+        }
+
+        return user; // Возвращаем объект User или null, если не найден
+    }
+
     public static ArrayList<New> get_news() {
         ArrayList<New> news_list = new ArrayList<>(); // Список для хранения новостей
         String query = "SELECT id, author_id, title, content, publish_datetime FROM news"; // SQL-запрос для получения всех новостей
