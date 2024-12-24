@@ -19,7 +19,6 @@ public class ParentController {
             String phone_number = userDetails.getUsername();
             User user = DataBase.get_user(phone_number);
             User child = DataBase.get_user(user.get_child_id());
-            System.out.println(child.toString());
             
             model.addAttribute("user", user);
             model.addAttribute("child", child);
@@ -38,8 +37,6 @@ public class ParentController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String phone_number = userDetails.getUsername();
             User user = DataBase.get_user(phone_number);
-            User child = DataBase.get_user(user.get_child_id());
-            System.out.println(child.toString());
             
             model.addAttribute("user", user);
         } else {

@@ -69,9 +69,7 @@ public class User implements UserDetails {
 
     public String get_last_task_name(){
         int last_task_id = DataBase.get_student_last_task_id(id);
-        System.out.println("last_task_id: " + last_task_id);
         Task last_task = DataBase.get_task(last_task_id);
-        System.out.println("last_task_name: " + last_task.get_name());
         return last_task.get_name();
     }
 
