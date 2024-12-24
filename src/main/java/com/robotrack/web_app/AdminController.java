@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,35 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AdminController {
 
     @GetMapping("/admin/profile")
-    public String show_admin_profile() {
-        return "admin_profile"; // Страница для администраторов
+    public String show_admin_profile(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String phone_number = userDetails.getUsername();
+            User user = DataBase.get_user(phone_number);
+            model.addAttribute("user", user);
+        } else {
+            return "redirect:/login";
+        }
+        
+        return "admin_profile";
+    }
+
+    @GetMapping("/admin/lessons")
+    public String show_admin_lessons(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String phone_number = userDetails.getUsername();
+            User user = DataBase.get_user(phone_number);
+            model.addAttribute("user", user); // Add the user object to the model
+        } else {
+            return "redirect:/login"; // Перенаправление на страницу входа
+        }
+        
+        return "admin_lessons"; // Return the view name
     }
 
     @GetMapping("/current-user")

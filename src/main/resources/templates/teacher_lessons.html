@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Уроки учителя</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f9f9f9;
+        }
+
+        .lesson-card {
+            height: 100%;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            row-gap: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="~{header :: header}"></div>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Уроки учителя</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card lesson-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Направление: Робототехника 4-6 лет</h5>
+                        <p class="card-text">Дата: 15 октября 2023</p>
+                        <p class="card-text">Время: 10:00 - 11:00</p>
+                        <p class="card-text font-weight-bold">Записанные дети: Иванов Иван, Петров Петр</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card lesson-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Направление: Робототехника 7-9 лет</h5>
+                        <p class="card-text">Дата: 16 октября 2023</p>
+                        <p class="card-text">Время: 11:00 - 12:00</p>
+                        <p class="card-text font-weight-bold">Записанные дети: Сидоров Сидор, Смирнова Анна, Кузнецова
+                            Ольга</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card lesson-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Направление: Робототехника 10-14 лет</h5>
+                        <p class="card-text">Дата: 17 октября 2023</p>
+                        <p class="card-text">Время: 12:00 - 13:00</p>
+                        <p class="card-text font-weight-bold">Записанные дети: Кузнецов Алексей, Васильева Ольга,
+                            Петрова Мария</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card lesson-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Направление: Робототехника 14+ лет</h5>
+                        <p class="card-text">Дата: 18 октября 2023</p>
+                        <p class="card-text">Время: 13:00 - 14:00</p>
+                        <p class="card-text font-weight-bold">Записанные дети: Николаев Сергей, Григорьева Светлана</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card lesson-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Направление: Робототехника 4-6 лет</h5>
+                        <p class="card-text">Дата: 19 октября 2023</p>
+                        <p class="card-text">Время: 14:00 - 15:00</p>
+                        <p class="card-text font-weight-bold">Записанные дети: Федоров Игорь</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card lesson-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Направление: Робототехника 7-9 лет</h5>
+                        <p class="card-text">Дата: 20 октября 2023</p>
+                        <p class="card-text">Время: 15:00 - 16:00</p>
+                        <p class="card-text font-weight-bold">Записанные дети: Лебедев Артем, Коваленко Юлия, Смирнов
+                            Алексей</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

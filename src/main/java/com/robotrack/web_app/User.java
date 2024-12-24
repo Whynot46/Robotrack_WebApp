@@ -67,8 +67,20 @@ public class User implements UserDetails {
         return (DataBase.get_role(role_id)).get_name();
     }
 
+    public String get_last_task_name(){
+        int last_task_id = DataBase.get_student_last_task_id(id);
+        System.out.println("last_task_id: " + last_task_id);
+        Task last_task = DataBase.get_task(last_task_id);
+        System.out.println("last_task_name: " + last_task.get_name());
+        return last_task.get_name();
+    }
+
+    public int get_child_id(){
+        return DataBase.get_child_id(id);
+    }
+
     public String toString(){
-        return "id: " + id + ", first_name: " + first_name + ", patronymic: " + patronymic + "birth_date: " + birth_date + "phone_number:"+ phone_number + "password_hash: "+ password_hash + "role_id: " + role_id;
+        return "id: " + id + ", first_name: " + first_name + ", patronymic: " + patronymic + ", last_name: " + last_name + "birth_date: " + birth_date + "phone_number:"+ phone_number + "password_hash: "+ password_hash + "role_id: " + role_id;
     }
 
         // Реализация методов UserDetails

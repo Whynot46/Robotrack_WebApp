@@ -216,7 +216,7 @@ public class DataBase {
     public static User get_user(String phone_number) {
         String query = "SELECT id, first_name, patronymic, last_name, birth_date, phone_number, password_hash, role_id FROM users WHERE phone_number = ?"; // SQL-запрос для получения пользователя по номеру телефона
         User user = null; // Изначально пользователь равен null
-        System.out.println("Phone number fron DB.get_user:" + phone_number);
+        System.out.println("Phone number from DB.get_user:" + phone_number);
 
         try (Connection connection = getConnection(); // Получаем соединение из пула
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -443,6 +443,34 @@ public class DataBase {
         return course;
     }
  
+    public static Task get_task(int task_id) {
+        Task task = null;
+        String query = "SELECT * FROM tasks WHERE id = ?"; // Предполагаем, что таблица называется 'tasks'
+    
+        try (Connection connection = DataBase.getConnection(); // Получаем соединение из класса DataBase
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            // Устанавливаем значение для параметра
+            preparedStatement.setInt(1, task_id); // Устанавливаем значение для первого параметра
+    
+            // Выполняем запрос
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Предполагаем, что у задачи есть поля id, name и description
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
+                    String description = resultSet.getString("description");
+                    
+                    task = new Task(id, name, description); // Создаем объект Task
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Обработка исключений
+        }
+    
+        return task; // Возвращаем найденную задачу или null, если не найдена
+    }
+
     public static List<Task> get_tasks() {
         List<Task> tasks = new ArrayList<>();
         String query = "SELECT id, name, description FROM tasks"; // SQL-запрос для получения id, name, description и course_id задач
@@ -466,9 +494,31 @@ public class DataBase {
         return tasks; 
     }
 
+    public static int get_child_id(int parent_id) {
+        System.out.println(parent_id);
+        int child_id = -1; // Значение по умолчанию, если дочерний элемент не найден
+        String query = "SELECT * FROM parent_profile WHERE user_id = ?"; // Предполагаем, что в таблице есть поле parent_id
+    
+        try (Connection connection = DataBase.getConnection(); // Получаем соединение из класса DataBase
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            preparedStatement.setInt(1, parent_id);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    child_id = resultSet.getInt("child_id"); // Извлекаем идентификатор дочернего элемента
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Обработка исключений
+        }
+    
+        return child_id; // Возвращаем идентификатор дочернего элемента или -1, если не найден
+    }
+
     public static int get_student_last_task_id(int student_id) {
         int lastTaskId = -1; // Изначально lastTaskId равен -1, что будет означать, что задача не найдена
-        String query = "SELECT last_task_id FROM student_profiles WHERE user_id = ?"; // SQL-запрос для получения last_task_id студента
+        String query = "SELECT * FROM student_profile WHERE user_id = ?"; // SQL-запрос для получения last_task_id студента
     
         try (Connection connection = DataBase.getConnection(); // Получаем соединение из класса DataBase
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -523,7 +573,7 @@ public class DataBase {
 
     public static StudentProfile get_student_profile(int user_id) {
         StudentProfile student_profile = null; // Изначально профиль студента равен null
-        String query = "SELECT * FROM student_profiles WHERE user_id = ?"; // SQL-запрос для получения профиля студента по user_id
+        String query = "SELECT * FROM student_profile WHERE user_id = ?"; // SQL-запрос для получения профиля студента по user_id
     
         try (Connection connection = DataBase.getConnection(); // Получаем соединение из класса DataBase
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -779,7 +829,7 @@ public class DataBase {
     }
 
     public static void change_student_profile(int user_id, String school_shift, int last_task_id, ArrayList<Integer> courses_id, ArrayList<Integer> lessons_id) {
-        String query = "UPDATE student_profiles SET school_shift = ?, last_task_id = ?, courses_id = ?, lessons_id = ? WHERE user_id = ?"; // SQL-запрос для обновления данных профиля студента
+        String query = "UPDATE student_profile SET school_shift = ?, last_task_id = ?, courses_id = ?, lessons_id = ? WHERE user_id = ?"; // SQL-запрос для обновления данных профиля студента
     
         try (Connection connection = DataBase.getConnection(); // Получаем соединение из класса DataBase
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {

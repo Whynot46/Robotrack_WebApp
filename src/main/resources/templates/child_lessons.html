@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мои занятия</title>
+    <title>Занятия ребёнка</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <style>
@@ -31,7 +31,7 @@
     <div th:replace="~{header :: header}"></div>
 
     <div class="container mt-5">
-        <h2 class="text-center">Мои занятия</h2>
+        <h2 class="text-center">Занятия ребёнка</h2>
 
         <div class="row" id="lessons-container">
             <!-- Пример карточки занятия -->
@@ -132,7 +132,7 @@
 
                 if(document.querySelectorAll('#lessons-container .card').length <= 0) {
                     const message = document.createElement('span');
-                    message.innerText = "Вы не записаны не на одно занятие"
+                    message.innerText = "Ребёнок не записан не на одно занятие"
                     message.classList.add("message")
 
                     document.getElementById('lessons-container').appendChild(message);

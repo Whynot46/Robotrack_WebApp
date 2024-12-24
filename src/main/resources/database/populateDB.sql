@@ -7,10 +7,10 @@ INSERT INTO roles (name) VALUES
 
 -- Вставка курсов
 INSERT INTO courses (name, age_limit) VALUES
-('Основы робототехники', '6-10 лет'),
-('Программирование для детей', '8-12 лет'),
-('Механика и электроника', '10-14 лет'),
-('Соревновательная робототехника', '12-16 лет');
+('Робототехника 4-6 лет', '4-6 лет'),
+('Робототехника 7-9 лет', '7-9 лет'),
+('Робототехника 10-14 лет', '10-14 лет'),
+('Робототехника 14+ лет', '14+ лет');
 
 -- Вставка пользователей
 INSERT INTO users (first_name, patronymic, last_name, birth_date, phone_number, password_hash, role_id) VALUES
@@ -35,3 +35,25 @@ INSERT INTO lessons (course_id, date, time, users_id) VALUES
 (2, '2023-09-02', '11:00:00', ARRAY[1, 3]),
 (3, '2023-09-03', '12:00:00', ARRAY[2, 4]),
 (4, '2023-09-04', '13:00:00', ARRAY[1, 3, 5]); 
+
+-- Заполнение таблицы student_profile
+INSERT INTO student_profile (user_id, school_shift, last_task_id, courses_id, lessons_id) VALUES
+(3, 1, 2, ARRAY[1, 2], ARRAY[1]), -- Сергей
+(5, 1, 1, ARRAY[1, 3], ARRAY[1]); -- Олег
+
+-- Заполнение таблицы parent_profile
+INSERT INTO parent_profile (user_id, child_id) VALUES
+(4, 3), -- Родитель Анны за Сергея
+(4, 5); -- Родитель Анны за Олега
+
+-- Заполнение таблицы teacher_profile
+INSERT INTO teacher_profile (user_id, courses_id, lessons_id) VALUES
+(2, ARRAY[1, 2, 3], ARRAY[1, 2, 3]); -- Учитель Мария
+
+-- Заполнение таблицы admin_profile
+INSERT INTO admin_profile (id) VALUES
+(1); -- Администратор Иванов
+
+-- Заполнение таблицы news
+INSERT INTO news (id, author_id, title, content, publish_datetime) VALUES
+(1, 1, 'Новый курс по робототехнике', 'Запись на новый курс по основам робототехники открыта!', '2023-10-01 09:00:00');

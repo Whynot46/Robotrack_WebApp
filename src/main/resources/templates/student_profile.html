@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профиль ученика</title>
+    <title>Мой профиль</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div th:replace="~{header :: header}"></div>
 
     <div class="container mt-5">
-        <h2 class="text-center">Профиль ученика</h2>
+        <h2 class="text-center">Мой профиль</h2>
         
         <div class="card">
             <div class="card-body">
@@ -22,6 +22,7 @@
                     <p><strong>Номер телефона:</strong> <span th:text="${user.get_phone_number()}"></span></p>
                     <p><strong>Дата рождения:</strong> <span th:text="${user.get_birth_date()}"></span></p>
                     <p><strong>Роль:</strong> <span th:text="${user.get_role_name()}"></span></p>
+                    <p><strong>Последние задание ребёнка:</strong> <span th:text="${user.get_last_task_name()}"></span></p>
                 </div>
                 <div th:if="${user == null}">
                     <p>Пользователь не найден.</p>

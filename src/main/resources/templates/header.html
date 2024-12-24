@@ -5,14 +5,16 @@
 
             <div class="navbar-nav" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
                 <a class="nav-link" th:href="${user.get_role_name() == 'STUDENT' ? '/student/profile' : 
-                user.get_role_name() == 'TEACHER' ? '/teacher/profile' : 
+                user.get_role_name() == 'TEACHER' ? '/teacher/profile' :
+                user.get_role_name() == 'PARENT' ? '/parent/profile' :  
                 user.get_role_name() == 'ADMIN' ? '/admin/profile' : 
                 '/profile'}"
                     style="border: 1px solid grey; border-radius: 15px; padding: 10px 20px; color: #000;">Личный
                     кабинет</a>
                 <a class="nav-link" th:href="${user.get_role_name() == 'STUDENT' ? '/student/student_lessons' : 
-                user.get_role_name() == 'TEACHER' ? '/teacher/tests_list' : 
-                user.get_role_name() == 'ADMIN' ? '/admin/tests_list' : 
+                user.get_role_name() == 'TEACHER' ? '/teacher/lessons' : 
+                user.get_role_name() == 'PARENT' ? '/parent/child_lessons' :  
+                user.get_role_name() == 'ADMIN' ? '/admin/lessons' : 
                 '/profile'}" style="border: 1px solid grey; border-radius: 15px; padding: 10px 20px; color: #000;">Занятия</a>
             </div>
 
