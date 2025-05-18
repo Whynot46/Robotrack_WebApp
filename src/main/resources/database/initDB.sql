@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS users (
     patronymic VARCHAR(50),
     last_name VARCHAR(50) NOT NULL,
     birth_date DATE NOT NULL,
-    phone_number VARCHAR(15),
-    password_hash VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(30),
+    password_hash VARCHAR(100) NOT NULL,
     role_id INT,
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );

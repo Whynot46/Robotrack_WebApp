@@ -11,36 +11,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class StudentController {
 
     @GetMapping("/student/profile")
-    public String show_student_profile(Model model) {
+    public String showStudentProfile(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
         if (authentication != null && authentication.isAuthenticated()) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String phone_number = userDetails.getUsername();
             User user = DataBase.get_user(phone_number);
-            
-            model.addAttribute("user", user); // Add the user object to the model
+            model.addAttribute("user", user);
         } else {
-            return "redirect:/login"; // Перенаправление на страницу входа
+            return "redirect:/login";
         }
         
-        return "student_profile"; // Return the view name
+        return "student_profile";
     }
 
     @GetMapping("/student/student_lessons")
-    public String show_student_lessons(Model model) {
+    public String showStudentLessons(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
         if (authentication != null && authentication.isAuthenticated()) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String phone_number = userDetails.getUsername();
             User user = DataBase.get_user(phone_number);
-            
-            model.addAttribute("user", user); // Add the user object to the model
+            model.addAttribute("user", user);
         } else {
-            return "redirect:/login"; // Перенаправление на страницу входа
+            return "redirect:/login";
         }
         
-        return "student_lessons"; // Return the view name
+        return "student_lessons"; // Убедитесь, что этот шаблон существует
     }
 }

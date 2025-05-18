@@ -22,7 +22,7 @@
                     <p><strong>Номер телефона:</strong> <span th:text="${user.get_phone_number()}"></span></p>
                     <p><strong>Дата рождения:</strong> <span th:text="${user.get_birth_date()}"></span></p>
                     <p><strong>Роль:</strong> <span th:text="${user.get_role_name()}"></span></p>
-                    <p><strong>Последние задание ребёнка:</strong> <span th:text="${user.get_last_task_name()}"></span></p>
+                    <p><strong>Последнее задание:</strong><span th:text="${user.get_last_task_name()}"></span></p>
                 </div>
                 <div th:if="${user == null}">
                     <p>Пользователь не найден.</p>

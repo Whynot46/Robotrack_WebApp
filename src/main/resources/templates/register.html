@@ -1,52 +1,162 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Регистрация</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | Robotrack</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .register-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #343a40;
+        }
+        .form-group label {
+            font-weight: 500;
+        }
+        .btn-register {
+            background-color: #4e73df;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .btn-register:hover {
+            background-color: #2e59d9;
+        }
+        .text-muted {
+            font-size: 0.85rem;
+        }
+        .phone-input {
+            direction: ltr;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2 class="text-center">Регистрация</h2>
-        <form th:action="@{/register}" method="post">
-            <div class="form-group">
-                <label for="firstName">Имя</label>
-                <input type="text" class="form-control" id="firstName" name="firstName" required>
+        <div class="register-container">
+            <h2 class="form-title">Создать новый аккаунт</h2>
+            
+            <!-- Сообщения об ошибках/успехе -->
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="form-group">
-                <label for="middleName">Отчество</label>
-                <input type="text" class="form-control" id="middleName" name="patronymic">
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${success}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="form-group">
-                <label for="lastName">Фамилия</label>
-                <input type="text" class="form-control" id="lastName" name="lastName" required>
+
+            <form th:action="@{/register}" method="post" id="registerForm">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="lastName">Фамилия *</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" 
+                               th:value="${lastName}" required minlength="2" maxlength="50">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="firstName">Имя *</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" 
+                               th:value="${firstName}" required minlength="2" maxlength="50">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="patronymic">Отчество</label>
+                        <input type="text" class="form-control" id="patronymic" name="patronymic" 
+                               th:value="${patronymic}" maxlength="50">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phoneNumber">Номер телефона *</label>
+                    <input type="tel" class="form-control phone-input" id="phoneNumber" name="phoneNumber" 
+                           th:value="${phoneNumber}" pattern="\+7\s?[0-9]{3}\s?[0-9]{3}\s?[0-9]{2}\s?[0-9]{2}" 
+                           placeholder="+7 XXX XXX XX XX" required>
+                    <small class="form-text text-muted">Формат: +7 XXX XXX XX XX</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthDate">Дата рождения *</label>
+                    <input type="date" class="form-control" id="birthDate" name="birthDate" 
+                           th:value="${birthDate}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roleId">Роль *</label>
+                    <select class="form-control" id="roleId" name="roleId" required>
+                        <option value="" disabled selected>Выберите роль</option>
+                        <option value="3" th:selected="${roleId == 3}">Ученик</option>
+                        <option value="2" th:selected="${roleId == 2}">Родитель</option>
+                        <option value="1" th:selected="${roleId == 1}">Учитель</option>
+                        <option value="4" th:selected="${roleId == 4}">Администратор</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Пароль *</label>
+                    <input type="password" class="form-control" id="password" name="password" 
+                           required minlength="6" maxlength="50">
+                    <small class="form-text text-muted">Минимум 6 символов</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Подтверждение пароля *</label>
+                    <input type="password" class="form-control" id="confirmPassword" 
+                           required minlength="6" maxlength="50">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block btn-register">Зарегистрироваться</button>
+            </form>
+            
+            <div class="text-center mt-3">
+                <p>Уже есть аккаунт? <a th:href="@{/login}" class="font-weight-bold">Войдите здесь</a></p>
             </div>
-            <div class="form-group">
-                <label for="phone">Номер телефона</label>
-                <input type="phone" class="form-control" id="phone" name="phoneNumber" required>
-            </div>
-            <div class="form-group">
-                <label for="birthDate">Дата рождения</label>
-                <input type="date" class="form-control" id="birthDate" name="birthDate" required>
-            </div>
-            <div class="form-group">
-                <label for="role">Роль</label>
-                <select class="form-control" id="role" name="roleId" required>
-                    <option value="" disabled selected>Выберите роль</option>
-                    <option value="1">Ученик</option>
-                    <option value="2">Родитель</option>
-                    <option value="3">Учитель</option>
-                    <option value="4">Администратор</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="password">Пароль</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
-        </form>
-        <div class="text-center" style="margin-top: 10px;">
-            <a href="/login" class="btn btn-link">Уже есть аккаунт? Войдите здесь</a>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Маска для телефона
+            $('#phoneNumber').on('input', function(e) {
+                let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+                e.target.value = '+7' + (x[2] ? ' ' + x[2] : '') + (x[3] ? ' ' + x[3] : '') + 
+                                (x[4] ? ' ' + x[4] : '') + (x[5] ? ' ' + x[5] : '');
+            });
+
+            // Проверка совпадения паролей
+            $('#registerForm').submit(function(e) {
+                const password = $('#password').val();
+                const confirmPassword = $('#confirmPassword').val();
+                
+                if (password !== confirmPassword) {
+                    alert('Пароли не совпадают!');
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
+            });
+
+            // Автоматическое закрытие alert через 5 секунд
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 5000);
+        });
+    </script>
 </body>
 </html>

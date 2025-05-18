@@ -46,24 +46,43 @@ public class DataBase {
         return false;
     }
 
-    public static void add_user(String firstName, String patronymic, String lastName, String birthDate,
-            String phoneNumber, String password, int role_id) {
-        String query = "INSERT INTO users (first_name, patronymic, last_name, birth_date, phone_number, password_hash, role_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public static boolean add_user(String firstName, String patronymic, String lastName, 
+                                String birthDateStr, String phoneNumber, String password, 
+                                int role_id) {
+        String query = "INSERT INTO users (first_name, patronymic, last_name, birth_date, phone_number, password_hash, role_id) VALUES (?, ?, ?, ?::date, ?, ?, ?)";
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password_hash = passwordEncoder.encode(password);
-        try (Connection connection = getConnection(); // Получаем соединение из пула
-                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+        // Нормализуем номер перед сохранением
+        String normalizedPhone = "+7" + phoneNumber.replaceAll("[^0-9]", "").substring(1);
+        
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            
+            // Преобразуем строку в java.sql.Date
+            java.sql.Date birthDate = null;
+            try {
+                birthDate = java.sql.Date.valueOf(birthDateStr);
+            } catch (IllegalArgumentException e) {
+                System.err.println("Некорректный формат даты: " + birthDateStr);
+                return false;
+            }
+
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, patronymic);
             preparedStatement.setString(3, lastName);
-            preparedStatement.setString(4, birthDate);
-            preparedStatement.setString(5, phoneNumber);
+            preparedStatement.setDate(4, birthDate);
+            preparedStatement.setString(5, normalizedPhone);
             preparedStatement.setString(6, password_hash);
             preparedStatement.setInt(7, role_id);
 
-            preparedStatement.executeUpdate(); // Выполняем обновление
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+            
         } catch (SQLException e) {
-            e.printStackTrace(); // Обработка исключений
+            System.err.println("Ошибка при регистрации пользователя: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -224,41 +243,32 @@ public class DataBase {
         return user;
     }
 
-    public static User get_user(String phone_number) {
-        String query = "SELECT id, first_name, patronymic, last_name, birth_date, phone_number, password_hash, role_id FROM users WHERE phone_number = ?"; // SQL-запрос
-                                                                                                                                                           // для
-                                                                                                                                                           // получения
-                                                                                                                                                           // пользователя
-                                                                                                                                                           // по
-                                                                                                                                                           // номеру
-                                                                                                                                                           // телефона
-        User user = null; // Изначально пользователь равен null
-
-        try (Connection connection = getConnection(); // Получаем соединение из пула
-                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setString(1, phone_number); // Устанавливаем номер телефона в запрос
-            ResultSet resultSet = preparedStatement.executeQuery(); // Выполняем запрос
-
-            if (resultSet.next()) { // Если запись найдена
-                int id = resultSet.getInt("id");
-                String first_name = resultSet.getString("first_name");
-                String patronymic = resultSet.getString("patronymic");
-                String last_name = resultSet.getString("last_name");
-                String birth_date = resultSet.getString("birth_date");
-                String phone_number_db = resultSet.getString("phone_number");
-                String password_hash = resultSet.getString("password_hash");
-                int role_id = resultSet.getInt("role_id");
-
-                // Создаем объект User с полученными данными
-                user = new User(id, first_name, patronymic, last_name, birth_date, phone_number_db, password_hash,
-                        role_id);
+    public static User get_user(String phoneNumber) {
+        String normalizedPhone = phoneNumber.replaceAll("[^0-9]", "");
+        String query = "SELECT * FROM users WHERE REPLACE(REPLACE(phone_number, ' ', ''), '+', '') = ?";
+        
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, normalizedPhone);
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next()) {
+                return new User(
+                    rs.getInt("id"),
+                    rs.getString("first_name"),
+                    rs.getString("patronymic"),
+                    rs.getString("last_name"),
+                    rs.getString("birth_date"),
+                    rs.getString("phone_number"),
+                    rs.getString("password_hash"),
+                    rs.getInt("role_id")
+                );
             }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Обработка исключений
+        } catch(SQLException e) {
+            e.printStackTrace();
         }
-
-        return user; // Возвращаем объект User или null, если не найден
+        return null;
     }
 
     public static ArrayList<New> get_news() {

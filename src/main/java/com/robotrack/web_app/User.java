@@ -67,10 +67,12 @@ public class User implements UserDetails {
         return (DataBase.get_role(role_id)).get_name();
     }
 
-    public String get_last_task_name(){
+    public String get_last_task_name() {
         int last_task_id = DataBase.get_student_last_task_id(id);
+        if (last_task_id == -1) return "Нет данных";
+        
         Task last_task = DataBase.get_task(last_task_id);
-        return last_task.get_name();
+        return last_task != null ? last_task.get_name() : "Нет данных";
     }
 
     public int get_child_id(){
@@ -95,12 +97,14 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-        if (role_id == 3) { // Assuming 3 is the role ID for STUDENT
-            authorities.add(new SimpleGrantedAuthority("STUDENT")); // No "ROLE_" prefix
-        } else if (role_id == 2) { // Assuming 2 is the role ID for TEACHER
-            authorities.add(new SimpleGrantedAuthority("TEACHER")); // No "ROLE_" prefix
-        } else if (role_id == 1) { // Assuming 1 is the role ID for ADMIN
-            authorities.add(new SimpleGrantedAuthority("ADMIN")); // No "ROLE_" prefix
+        if (role_id == 1) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else if (role_id == 2) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_TEACHER"));
+        } else if (role_id == 3) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        } else if (role_id == 4) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_PARENT"));
         }
         return authorities;
     }
