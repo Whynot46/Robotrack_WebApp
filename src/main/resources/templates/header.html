@@ -1,32 +1,46 @@
 <div th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container" style="display: flex; justify-content: space-between;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
             <a class="navbar-brand" href="/">Детский клуб робототехники "RoboTrack"</a>
 
-            <div class="navbar-nav" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-                <a class="nav-link" th:href="${user.get_role_name() == 'STUDENT' ? '/student/profile' : 
-                user.get_role_name() == 'TEACHER' ? '/teacher/profile' :
-                user.get_role_name() == 'PARENT' ? '/parent/profile' :  
-                user.get_role_name() == 'ADMIN' ? '/admin/profile' : 
-                '/profile'}"
-                    style="border: 1px solid grey; border-radius: 15px; padding: 10px 20px; color: #000;">Личный
-                    кабинет</a>
-                <a class="nav-link" th:href="${user.get_role_name() == 'STUDENT' ? '/student/student_lessons' : 
-                user.get_role_name() == 'TEACHER' ? '/teacher/lessons' : 
-                user.get_role_name() == 'PARENT' ? '/parent/child_lessons' :  
-                user.get_role_name() == 'ADMIN' ? '/admin/lessons' : 
-                '/profile'}" style="border: 1px solid grey; border-radius: 15px; padding: 10px 20px; color: #000;">Занятия</a>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
-                <span class="navbar-text" th:text="${user.get_fullname()}" style="color: #000; font-size: 18px;"></span>
-                <a class="nav-link btn btn-danger" th:href="@{/logout}" style="border-radius: 10px;">Выход</a>
-            </div>
-
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="${user.get_role_name() == 'STUDENT' ? '/student/profile' :
+                        user.get_role_name() == 'TEACHER' ? '/teacher/profile' :
+                        user.get_role_name() == 'PARENT' ? '/parent/profile' :
+                        user.get_role_name() == 'ADMIN' ? '/admin/profile' :
+                        '/profile'}">
+                            <span class="d-none d-md-inline">Личный кабинет</span>
+                            <span class="d-md-none">Профиль</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="${user.get_role_name() == 'STUDENT' ? '/student/student_lessons' :
+                        user.get_role_name() == 'TEACHER' ? '/teacher/lessons' :
+                        user.get_role_name() == 'PARENT' ? '/parent/child_lessons' :
+                        user.get_role_name() == 'ADMIN' ? '/admin/lessons' :
+                        '/profile'}">
+                            Занятия
+                        </a>
+                    </li>
+                    <li class="nav-item" th:if="${user.get_role_name() == 'TEACHER' || user.get_role_name() == 'ADMIN'}">
+                        <a class="nav-link" href="/statistics">
+                            Статистика
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text mr-3 d-none d-sm-inline" th:text="${user.get_fullname()}"></span>
+                    <a class="btn btn-outline-danger" th:href="@{/logout}">Выход</a>
+                </div>
+            </div>
         </div>
     </nav>
 </div>

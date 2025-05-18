@@ -30,23 +30,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                .requestMatchers("/teacher/**").hasAuthority("ROLE_TEACHER")
-                .requestMatchers("/parent/**").hasAuthority("ROLE_PARENT")
-                .requestMatchers("/student/**").hasAuthority("ROLE_STUDENT")
-                .anyRequest().authenticated()
+                    .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                    .requestMatchers("/teacher/**").hasAuthority("ROLE_TEACHER")
+                    .requestMatchers("/parent/**").hasAuthority("ROLE_PARENT")
+                    .requestMatchers("/student/**").hasAuthority("ROLE_STUDENT")
+                    .requestMatchers("/statistics").hasAnyAuthority("ROLE_ADMIN", "ROLE_TEACHER")
+                    .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .loginPage("/login")
-                .usernameParameter("phone_number") // Указываем, что используем phone_number
-                .successHandler(customAuthenticationSuccessHandler())
-                .failureHandler(customAuthenticationFailureHandler())
-                .permitAll()
+                    .loginPage("/login")
+                    .usernameParameter("phone_number")
+                    .successHandler(customAuthenticationSuccessHandler())
+                    .failureHandler(customAuthenticationFailureHandler())
+                    .permitAll()
             )
             .logout(logout -> logout
-                .permitAll()
+                    .permitAll()
             );
-    
+
         return http.build();
     }
 

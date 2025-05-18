@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика посещений</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+        }
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{header :: header}"></div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Статистика посещений</h2>
+
+    <!-- Фильтры -->
+    <div class="filter-section">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="yearSelect">Год</label>
+                    <select class="form-control" id="yearSelect">
+                        <option value="2023">2023</option>
+                        <option value="2024" selected>2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="monthSelect">Месяц</label>
+                    <select class="form-control" id="monthSelect">
+                        <option value="0">Все месяцы</option>
+                        <option value="1">Январь</option>
+                        <option value="2">Февраль</option>
+                        <option value="3">Март</option>
+                        <option value="4">Апрель</option>
+                        <option value="5">Май</option>
+                        <option value="6">Июнь</option>
+                        <option value="7">Июль</option>
+                        <option value="8">Август</option>
+                        <option value="9">Сентябрь</option>
+                        <option value="10">Октябрь</option>
+                        <option value="11">Ноябрь</option>
+                        <option value="12">Декабрь</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button class="btn btn-primary" onclick="applyFilters()">Применить фильтры</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Общая статистика -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h5 class="card-title">Всего посещений</h5>
+                    <h2 class="text-primary" id="totalVisits">1,245</h2>
+                    <p class="text-muted">за выбранный период</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h5 class="card-title">Среднее посещений</h5>
+                    <h2 class="text-primary" id="avgVisits">15</h2>
+                    <p class="text-muted">в день</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h5 class="card-title">Самое популярное</h5>
+                    <h2 class="text-primary" id="popularCourse">Робототехника 7-9 лет</h2>
+                    <p class="text-muted"><span id="popularVisits">320</span> посещений</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Таблица статистики по направлениям -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Статистика по направлениям</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Направление</th>
+                        <th>Возрастная группа</th>
+                        <th>Кол-во занятий</th>
+                        <th>Посещений</th>
+                        <th>Среднее посещений</th>
+                        <th>% от общего</th>
+                    </tr>
+                    </thead>
+                    <tbody id="coursesTable">
+                    <!-- Данные будут заполнены через JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Таблица топ студентов -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Топ студентов по посещаемости</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Студент</th>
+                        <th>Направление</th>
+                        <th>Посещений</th>
+                        <th>% посещений</th>
+                    </tr>
+                    </thead>
+                    <tbody id="studentsTable">
+                    <!-- Данные будут заполнены через JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Данные для разных периодов
+    const statisticsData = {
+        "2024": {
+            "0": { // Все месяцы
+                totalVisits: 1245,
+                avgVisits: 15,
+                popularCourse: "Робототехника 7-9 лет",
+                popularVisits: 320,
+                courses: [
+                    {name: "Робототехника 4-6 лет", age: "4-6 лет", lessons: 24, visits: 280, avg: 12, percent: "22.5%"},
+                    {name: "Робототехника 7-9 лет", age: "7-9 лет", lessons: 30, visits: 320, avg: 11, percent: "25.7%"},
+                    {name: "Робототехника 10-14 лет", age: "10-14 лет", lessons: 28, visits: 310, avg: 11, percent: "24.9%"},
+                    {name: "Робототехника 14+ лет", age: "14+ лет", lessons: 20, visits: 220, avg: 11, percent: "17.7%"},
+                    {name: "3D-моделирование", age: "10+ лет", lessons: 15, visits: 115, avg: 8, percent: "9.2%"}
+                ],
+                students: [
+                    {name: "Иванов Иван", course: "Робототехника 7-9 лет", visits: 28, percent: "93.3%"},
+                    {name: "Петрова Мария", course: "Робототехника 10-14 лет", visits: 26, percent: "92.9%"},
+                    {name: "Сидоров Алексей", course: "Робототехника 4-6 лет", visits: 23, percent: "95.8%"},
+                    {name: "Кузнецова Ольга", course: "3D-моделирование", visits: 14, percent: "93.3%"},
+                    {name: "Смирнов Артем", course: "Робототехника 14+ лет", visits: 19, percent: "95.0%"}
+                ]
+            },
+            "3": { // Март
+                totalVisits: 420,
+                avgVisits: 14,
+                popularCourse: "Робототехника 10-14 лет",
+                popularVisits: 125,
+                courses: [
+                    {name: "Робототехника 4-6 лет", age: "4-6 лет", lessons: 8, visits: 85, avg: 11, percent: "20.2%"},
+                    {name: "Робототехника 7-9 лет", age: "7-9 лет", lessons: 10, visits: 105, avg: 11, percent: "25.0%"},
+                    {name: "Робототехника 10-14 лет", age: "10-14 лет", lessons: 9, visits: 125, avg: 14, percent: "29.8%"},
+                    {name: "Робототехника 14+ лет", age: "14+ лет", lessons: 7, visits: 75, avg: 11, percent: "17.9%"},
+                    {name: "3D-моделирование", age: "10+ лет", lessons: 5, visits: 30, avg: 6, percent: "7.1%"}
+                ],
+                students: [
+                    {name: "Петрова Мария", course: "Робототехника 10-14 лет", visits: 9, percent: "100.0%"},
+                    {name: "Иванов Иван", course: "Робототехника 7-9 лет", visits: 8, percent: "80.0%"},
+                    {name: "Сидоров Алексей", course: "Робототехника 4-6 лет", visits: 8, percent: "100.0%"},
+                    {name: "Кузнецова Ольга", course: "3D-моделирование", visits: 5, percent: "100.0%"},
+                    {name: "Смирнов Артем", course: "Робототехника 14+ лет", visits: 7, percent: "100.0%"}
+                ]
+            },
+            "5": { // Май
+                totalVisits: 380,
+                avgVisits: 12,
+                popularCourse: "Робототехника 4-6 лет",
+                popularVisits: 110,
+                courses: [
+                    {name: "Робототехника 4-6 лет", age: "4-6 лет", lessons: 9, visits: 110, avg: 12, percent: "28.9%"},
+                    {name: "Робототехника 7-9 лет", age: "7-9 лет", lessons: 8, visits: 95, avg: 12, percent: "25.0%"},
+                    {name: "Робототехника 10-14 лет", age: "10-14 лет", lessons: 7, visits: 85, avg: 12, percent: "22.4%"},
+                    {name: "Робототехника 14+ лет", age: "14+ лет", lessons: 6, visits: 60, avg: 10, percent: "15.8%"},
+                    {name: "3D-моделирование", age: "10+ лет", lessons: 4, visits: 30, avg: 8, percent: "7.9%"}
+                ],
+                students: [
+                    {name: "Сидоров Алексей", course: "Робототехника 4-6 лет", visits: 9, percent: "100.0%"},
+                    {name: "Иванов Иван", course: "Робототехника 7-9 лет", visits: 8, percent: "100.0%"},
+                    {name: "Петрова Мария", course: "Робототехника 10-14 лет", visits: 7, percent: "100.0%"},
+                    {name: "Смирнов Артем", course: "Робототехника 14+ лет", visits: 6, percent: "100.0%"},
+                    {name: "Кузнецова Ольга", course: "3D-моделирование", visits: 4, percent: "100.0%"}
+                ]
+            }
+        },
+        "2023": {
+            "0": { // Все месяцы
+                totalVisits: 980,
+                avgVisits: 12,
+                popularCourse: "Робототехника 10-14 лет",
+                popularVisits: 280,
+                courses: [
+                    {name: "Робототехника 4-6 лет", age: "4-6 лет", lessons: 20, visits: 200, avg: 10, percent: "20.4%"},
+                    {name: "Робототехника 7-9 лет", age: "7-9 лет", lessons: 25, visits: 250, avg: 10, percent: "25.5%"},
+                    {name: "Робототехника 10-14 лет", age: "10-14 лет", lessons: 23, visits: 280, avg: 12, percent: "28.6%"},
+                    {name: "Робототехника 14+ лет", age: "14+ лет", lessons: 18, visits: 150, avg: 8, percent: "15.3%"},
+                    {name: "3D-моделирование", age: "10+ лет", lessons: 10, visits: 100, avg: 10, percent: "10.2%"}
+                ],
+                students: [
+                    {name: "Петрова Мария", course: "Робототехника 10-14 лет", visits: 22, percent: "95.7%"},
+                    {name: "Иванов Иван", course: "Робототехника 7-9 лет", visits: 20, percent: "80.0%"},
+                    {name: "Сидоров Алексей", course: "Робототехника 4-6 лет", visits: 18, percent: "90.0%"},
+                    {name: "Кузнецова Ольга", course: "3D-моделирование", visits: 9, percent: "90.0%"},
+                    {name: "Смирнов Артем", course: "Робототехника 14+ лет", visits: 15, percent: "83.3%"}
+                ]
+            }
+        },
+        "2025": {
+            "0": { // Все месяцы (прогноз)
+                totalVisits: 150,
+                avgVisits: 10,
+                popularCourse: "Робототехника 7-9 лет",
+                popularVisits: 50,
+                courses: [
+                    {name: "Робототехника 4-6 лет", age: "4-6 лет", lessons: 5, visits: 30, avg: 6, percent: "20.0%"},
+                    {name: "Робототехника 7-9 лет", age: "7-9 лет", lessons: 6, visits: 50, avg: 8, percent: "33.3%"},
+                    {name: "Робототехника 10-14 лет", age: "10-14 лет", lessons: 5, visits: 40, avg: 8, percent: "26.7%"},
+                    {name: "Робототехника 14+ лет", age: "14+ лет", lessons: 4, visits: 20, avg: 5, percent: "13.3%"},
+                    {name: "3D-моделирование", age: "10+ лет", lessons: 2, visits: 10, avg: 5, percent: "6.7%"}
+                ],
+                students: [
+                    {name: "Иванов Иван", course: "Робототехника 7-9 лет", visits: 6, percent: "100.0%"},
+                    {name: "Петрова Мария", course: "Робототехника 10-14 лет", visits: 5, percent: "100.0%"},
+                    {name: "Сидоров Алексей", course: "Робототехника 4-6 лет", visits: 4, percent: "80.0%"},
+                    {name: "Кузнецова Ольга", course: "3D-моделирование", visits: 2, percent: "100.0%"},
+                    {name: "Смирнов Артем", course: "Робототехника 14+ лет", visits: 3, percent: "75.0%"}
+                ]
+            }
+        }
+    };
+
+    function applyFilters() {
+        const year = document.getElementById('yearSelect').value;
+        const month = document.getElementById('monthSelect').value;
+
+        // Получаем данные для выбранного периода
+        const yearData = statisticsData[year] || statisticsData["2024"];
+        const periodData = yearData[month] || yearData["0"];
+
+        // Обновляем общую статистику
+        document.getElementById('totalVisits').textContent = periodData.totalVisits.toLocaleString();
+        document.getElementById('avgVisits').textContent = periodData.avgVisits;
+        document.getElementById('popularCourse').textContent = periodData.popularCourse;
+        document.getElementById('popularVisits').textContent = periodData.popularVisits;
+
+        // Заполняем таблицу направлений
+        const coursesTable = document.getElementById('coursesTable');
+        coursesTable.innerHTML = '';
+        periodData.courses.forEach(course => {
+            coursesTable.innerHTML += `
+                <tr>
+                    <td>${course.name}</td>
+                    <td>${course.age}</td>
+                    <td>${course.lessons}</td>
+                    <td>${course.visits}</td>
+                    <td>${course.avg}</td>
+                    <td>${course.percent}</td>
+                </tr>
+            `;
+        });
+
+        // Заполняем таблицу студентов
+        const studentsTable = document.getElementById('studentsTable');
+        studentsTable.innerHTML = '';
+        periodData.students.forEach((student, index) => {
+            studentsTable.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${student.name}</td>
+                    <td>${student.course}</td>
+                    <td>${student.visits}</td>
+                    <td>${student.percent}</td>
+                </tr>
+            `;
+        });
+    }
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', applyFilters);
+</script>
+</body>
+</html>
